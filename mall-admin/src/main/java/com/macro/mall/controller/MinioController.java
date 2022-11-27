@@ -1,7 +1,6 @@
 package com.macro.mall.controller;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.json.JSONUtil;
 import com.macro.mall.common.api.CommonResult;
 import com.macro.mall.dto.BucketPolicyConfigDto;
@@ -9,14 +8,12 @@ import com.macro.mall.dto.MinioUploadDto;
 import io.minio.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.text.SimpleDateFormat;
@@ -26,8 +23,9 @@ import java.util.Date;
  * MinIO对象存储管理Controller
  * Created by macro on 2019/12/25.
  */
-@Api(tags = "MinioController", description = "MinIO对象存储管理")
 @Controller
+@Api(tags = "MinioController")
+@Tag(name = "MinioController", description = "MinIO对象存储管理")
 @RequestMapping("/minio")
 public class MinioController {
 
@@ -44,7 +42,7 @@ public class MinioController {
     @ApiOperation("文件上传")
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     @ResponseBody
-    public CommonResult upload(@RequestParam("file") MultipartFile file) {
+    public CommonResult upload(@RequestPart("file") MultipartFile file) {
         try {
             //创建一个MinIO的Java客户端
             MinioClient minioClient =MinioClient.builder()
